@@ -21,13 +21,9 @@
   <div class="container animate__animated animate__fadeIn">
     <h2>Transformer QR Verification</h2>
 
-    <div id="qr-section">
-      <button onclick="startScanner()">Scan QR Code</button>
-      <video id="preview" width="100%" style="margin-top:15px; display:none;"></video>
-    </div>
-
-    <div id="code-section" style="display:none;">
-      <h3>Enter Unique Code</h3>
+    <!-- QR Scanner and Unique Code Section -->
+    <div id="qr-code-section">
+      <video id="preview" width="100%" style="margin-top:15px; display:block;"></video>
       <input type="text" id="uniqueCode" placeholder="Enter Unique Code" />
       <button onclick="verifyCode()">Verify</button>
     </div>
@@ -42,7 +38,6 @@
     let scannedQR = "";
 
     function startScanner() {
-      document.getElementById('loading').style.display = 'block';
       const videoElem = document.getElementById("preview");
       videoElem.style.display = "block";
 
@@ -50,11 +45,12 @@
       scanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, (decodedText) => {
         scannedQR = decodedText;
         scanner.stop();
-        document.getElementById("qr-section").style.display = "none";
-        document.getElementById("code-section").style.display = "block";
-        document.getElementById('loading').style.display = 'none';
+        document.getElementById('preview').style.display = 'none';
       });
     }
+
+    // Start scanner immediately on page load
+    window.onload = () => { startScanner(); };
 
     async function verifyCode() {
       const codeEntered = document.getElementById("uniqueCode").value.trim();
